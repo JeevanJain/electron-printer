@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, webContents } = require('electron')
 const path = require('path')
 const electronStore = require('electron-store');
 
@@ -25,10 +25,22 @@ const createWindow = () => {
     })
 
     // and load the index.html of the app.
-    mainWin.loadFile('index.html')
+    // mainWin.loadFile('index.html')
+    mainWin.loadURL('https://obaps.in/crusher_login.php');
 
     // Open the DevTools.
-    // mainWin.webContents.openDevTools()
+    mainWin.webContents.openDevTools()
+
+    mainWin.webContents.session.on("select-serial-port", (event, ports, webContents, callback) => {
+
+        console.log("select serial port")
+        if (ports && ports.length > 0) {
+            console.log("port list is not empty", ports);
+        } else {
+            console.log("port list is empty");
+            callback('');
+        }
+    });
 }
 
 const createSelectWindow = () => {
