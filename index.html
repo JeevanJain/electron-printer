@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>OBAPS!</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #webview {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: inline-flex !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ./test.html -->
+    <webview id="webview" src="https://obaps.in/crusher_login.php" allowpopups autosize
+        webpreferences="nativeWindowOpen">
+        <div class="indicator"></div>
+    </webview>
+
+    <script>
+        const webview = document.getElementById('webview')
+        webview.addEventListener('new-window', (event) => {
+            event.preventDefault();
+            if (event.frameName == "printbill") {
+                console.log("printbill", event);
+                window.api.printWin();
+            }
+        })
+    </script>
+</body>
+
+</html>

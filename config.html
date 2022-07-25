@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Bar-X</title>
+    <style>
+        * {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-family: "Lato", sans-serif;
+        }
+
+        .mainDiv {
+            margin: 30px;
+            background-color: #f3efe7;
+            padding: 2em;
+        }
+
+        .mainDiv .intro {
+            margin-bottom: 2em;
+        }
+
+        .mainDiv h2 {
+            text-align: center;
+            margin: 0;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select {
+            height: 45px;
+            width: 100%;
+            margin-bottom: 1em;
+            font-size: 0.9em;
+            padding: 0.5em 1em;
+            border: none;
+        }
+
+        .parentIp {
+            display: none;
+        }
+
+        input[type="button"] {
+            cursor: pointer;
+            margin: 0;
+            padding: 0.5em 2em;
+            background: #636363;
+            border: none;
+            color: #fff;
+            font-size: 1em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mainDiv">
+        <div class="intro">
+            <h2>SELECT PRINTERS -</h2>
+        </div>
+        <!-- Select For Printers -->
+        <h3>Bill Printer:</h3>
+        <select id="billPrinter" autofocus tabindex="1"></select>
+
+        <!-- submit btn -->
+        <input type="button" id="submitBtn" value="Done" tabindex="4" />
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', async (event) => {
+            // get all printers
+            const allPrinters = await window.api.getAllPrinters();
+            var printerNamesArr = allPrinters.map(a => a.name);
+
+            var billSelect = document.getElementById('billPrinter');
+            printerNamesArr.map(name => {
+                var option = document.createElement('option');
+                option.value = name;
+                option.text = name;
+                billSelect.appendChild(option);
+            });
+
+            document.getElementById('submitBtn').onclick = btnClickFunction
+
+            async function btnClickFunction() {
+                console.log("btnClickFunction called")
+                let billPrint = document.getElementById('billPrinter').value;
+
+                if (billPrint) {
+                    document.getElementById('submitBtn').disabled = true;
+                    await window.api.setPrinter(billPrint);
+                } else {
+                    // its null
+                    alert('Please select a printer.');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

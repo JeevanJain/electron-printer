@@ -1,0 +1,19 @@
+<html>
+
+<head>
+    <script type="text/javascript">
+        function openWin() {
+            var myWindow = window.open('', 'printbill', 'width=200,height=100,frame=false');
+            myWindow.document.write("<p>This is 'myWindow'</p>");
+            myWindow.document.close();
+        }
+    </script>
+</head>
+
+<body>
+
+    <input type="button" value="Open window" onclick="openWin()" />
+
+</body>
+
+</html>
