@@ -37,27 +37,23 @@
     "forge": "./forge.config.js"
   },
   "build": {
-    "appId": "com.wirecamp.barx",
-    "productName": "Bar-X",
+    "appId": "com.obaps.printer",
+    "productName": "Obaps Printer",
     "files": [
       "node_modules/",
       "index.js",
-      "configWin.html",
+      "preload.js",
+      "preloadConfig.js",
       "index.html",
+      "config.html",
       "package.json"
     ],
     "directories": {
       "output": "release"
     },
     "win": {
-      "icon": "barx.ico",
       "target": [
         "nsis"
-      ]
-    },
-    "mac": {
-      "target": [
-        "dmg"
       ]
     }
   }
