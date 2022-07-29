@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, webContents } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const electronStore = require('electron-store');
 
@@ -29,13 +29,14 @@ const createWindow = () => {
     mainWin.loadURL('https://obaps.in/crusher_login.php');
 
     // Open the DevTools.
-    mainWin.webContents.openDevTools()
+    // mainWin.webContents.openDevTools()
 
     mainWin.webContents.session.on("select-serial-port", (event, ports, webContents, callback) => {
 
         console.log("select serial port")
         if (ports && ports.length > 0) {
             console.log("port list is not empty", ports);
+            callback(ports.find(o => o.portName === "COM3").portId)
         } else {
             console.log("port list is empty");
             callback('');
@@ -44,7 +45,6 @@ const createWindow = () => {
 }
 
 const createSelectWindow = () => {
-    console.log("select window")
     // Create the browser window.
     selectionWin = new BrowserWindow({
         frame: false,
@@ -107,11 +107,14 @@ ipcMain.handle('setPrinter', (event, printer) => {
     }
 });
 ipcMain.on("print-message", (event, args) => {
-    BrowserWindow.getFocusedWindow().webContents.print({ silent: true, printBackground: false, deviceName: sharedObj.billPrint }, (success) => {
-        if (success) {
-            if (!BrowserWindow.getFocusedWindow().isDestroyed()) {
-                BrowserWindow.getFocusedWindow().close();
+    BrowserWindow
+        .getFocusedWindow()
+        .webContents
+        .print({ silent: true, printBackground: false, deviceName: sharedObj.billPrint }, (success) => {
+            if (success) {
+                if (!BrowserWindow.getFocusedWindow().isDestroyed()) {
+                    BrowserWindow.getFocusedWindow().close();
+                }
             }
-        }
-    });
+        });
 })
